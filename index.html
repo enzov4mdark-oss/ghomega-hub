@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GHOMEGA PROTECTOR</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,800&family=JetBrains+Mono:wght@400&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --bg: #eceef2;
+        --fg: #0d1117;
+        --muted: #5d6573;
+        --glow-a: #ff7a45;
+        --glow-b: #ffc4a3;
+        --glow-c: #7fd6c8;
+        --panel: rgba(255, 255, 255, 0.22);
+        --font-display: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
+        --font-mono: "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #0a0d12;
+          --fg: #f2f4f7;
+          --muted: #8b93a1;
+          --glow-a: #ff6a3d;
+          --glow-b: #8a3b2a;
+          --glow-c: #1f8f86;
+          color-scheme: dark;
+        }
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html, body {
+        margin: 0;
+        min-height: 100%;
+        background: var(--bg);
+        color: var(--fg);
+        font-family: var(--font-display);
+      }
+
+      body {
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        overflow: hidden;
+        background:
+          radial-gradient(circle at 20% 20%, rgba(255, 122, 69, 0.14), transparent 30%),
+          radial-gradient(circle at 80% 30%, rgba(127, 214, 200, 0.15), transparent 28%),
+          linear-gradient(135deg, var(--bg), color-mix(in srgb, var(--bg) 80%, #ffffff 20%));
+      }
+
+      .scene {
+        position: relative;
+        width: min(100vw, 1200px);
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        padding: 2rem 1.5rem 3rem;
+      }
+
+      .glow {
+        position: absolute;
+        width: min(72vw, 900px);
+        aspect-ratio: 1;
+        border-radius: 50%;
+        filter: blur(90px);
+        opacity: 0.8;
+        background:
+          radial-gradient(circle, rgba(255, 122, 69, 0.32) 0%, rgba(255, 122, 69, 0.08) 32%, transparent 68%),
+          radial-gradient(circle at 60% 40%, rgba(127, 214, 200, 0.22) 0%, rgba(127, 214, 200, 0.06) 28%, transparent 60%);
+        animation: drift 18s ease-in-out infinite alternate;
+        pointer-events: none;
+      }
+
+      .word-wrap {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        isolation: isolate;
+      }
+
+      .word {
+        position: relative;
+        margin: 0;
+        font-size: clamp(5rem, 18vw, 28rem);
+        line-height: 0.8;
+        letter-spacing: -0.08em;
+        font-weight: 800;
+        text-transform: uppercase;
+        color: var(--fg);
+        text-align: center;
+        user-select: none;
+        filter: drop-shadow(0 0 32px rgba(255, 122, 69, 0.12));
+      }
+
+      .word::before {
+        content: attr(data-word);
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        color: transparent;
+        background: linear-gradient(
+          120deg,
+          var(--glow-a),
+          var(--glow-b),
+          var(--glow-c),
+          var(--glow-a)
+        );
+        background-size: 220% 220%;
+        -webkit-background-clip: text;
+        background-clip: text;
+        filter: blur(18px);
+        opacity: 0.9;
+        animation: shimmer 14s ease-in-out infinite alternate;
+      }
+
+      .word::after {
+        content: attr(data-word);
+        position: absolute;
+        inset: 0;
+        z-index: -2;
+        color: transparent;
+        background: linear-gradient(
+          120deg,
+          rgba(255, 122, 69, 0.2),
+          rgba(127, 214, 200, 0.22),
+          rgba(255, 196, 163, 0.22)
+        );
+        background-size: 200% 200%;
+        -webkit-background-clip: text;
+        background-clip: text;
+        filter: blur(42px);
+        opacity: 0.75;
+        animation: shimmer 11s ease-in-out infinite alternate-reverse;
+      }
+
+      .footer {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 1.1rem;
+        text-align: center;
+        z-index: 2;
+        font-family: var(--font-mono);
+        font-size: 0.7rem;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      .footer span {
+        display: inline-block;
+        padding: 0.2rem 0.6rem;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.12);
+        backdrop-filter: blur(6px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+      }
+
+      @keyframes drift {
+        0% {
+          transform: translate3d(-6%, 2%, 0) scale(0.94);
+        }
+        50% {
+          transform: translate3d(6%, -5%, 0) scale(1.05);
+        }
+        100% {
+          transform: translate3d(-4%, 7%, 0) scale(0.98);
+        }
+      }
+
+      @keyframes shimmer {
+        0% {
+          background-position: 0% 50%;
+        }
+        100% {
+          background-position: 100% 50%;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .scene {
+          padding-bottom: 4rem;
+        }
+
+        .word {
+          font-size: clamp(4rem, 30vw, 12rem);
+        }
+
+        .footer {
+          bottom: 1.2rem;
+          font-size: 0.58rem;
+          letter-spacing: 0.12em;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="scene" aria-label="Página inicial">
+      <div class="glow" aria-hidden="true"></div>
+
+      <div class="word-wrap">
+        <h1 class="word" data-word="GHOMEGA PROTECTOR">GHOMEGA PROTECTOR</h1>
+      </div>
+
+      <footer class="footer">
+        <span>ghomega / protect</span>
+      </footer>
+    </main>
+  </body>
+</html>
